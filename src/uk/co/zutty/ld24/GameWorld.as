@@ -1,36 +1,54 @@
 package uk.co.zutty.ld24
 {
+    import flash.geom.Point;
+    
     import net.flashpunk.Entity;
+    import net.flashpunk.FP;
     import net.flashpunk.World;
+    import net.flashpunk.graphics.Image;
     import net.flashpunk.utils.Input;
     
     public class GameWorld extends World {
         
-        private var _creatures:Supplier = Supplier.newSupplier(32, function():Suppliable { return new Creature(); });
-        private var _robots:Supplier = Supplier.newSupplier(32, function():Suppliable { return new Robot(); });
-        private var _markers:Supplier = Supplier.newSupplier(4, function():Suppliable { return new Marker(); });
+        [Embed(source = 'assets/tree2.png')]
+        private static const TREE_IMAGE:Class;
+
+        private static const SCROLL_MARGIN:Number = 8;
+        
+        private var _marker:Marker;
         
         private var _selection:Vector.<Mob>;
         
         private var _pointer:Pointer;
+        private var _level:OgmoLevel;
+        private var _ground:Layer;
+        private var _water:Layer;
 
         public function GameWorld() {
             super();
             
-            Supplier.initAll();
+            _marker = new Marker();
             
-            _creatures.addAll(this);
-            _robots.addAll(this);
-            _markers.addAll(this);
-            
-            _creatures.spawnNext(20, 20);
-            _robots.spawnNext(100, 20);
+            loadLevel(new Level1());
             
             _pointer = new Pointer();
             add(_pointer);
             
             _selection = new Vector.<Mob>();
             reset();
+        }
+        
+        private function loadLevel(lvl:OgmoLevel):void {
+            _level = lvl;
+            _ground = lvl.getLayer("ground");
+            add(_ground);
+            _water = lvl.getLayer("water");
+            add(_water);
+            
+            var p:Point;
+            for each(p in _level.getObjectPositions("objects", "tree")) {
+                add(new Entity(p.x, p.y, new Image(TREE_IMAGE)));
+            }
         }
         
         public function reset():void {
@@ -49,10 +67,32 @@ package uk.co.zutty.ld24
             _selection[_selection.length] = mob;
         }
         
+        public function set scrollx(x:Number):void {
+            camera.x = FP.clamp(x, 0, _level.width - FP.screen.width);
+        }
+        
+        public function set scrolly(y:Number):void {
+            camera.y = FP.clamp(y, 0, _level.height - FP.screen.height);
+        }
+
         override public function update():void {
             super.update();
 
             var hover:Mob = collidePoint("mob", mouseX, mouseY) as Mob;
+            
+            // Scrolling
+            if(Input.mouseX <= SCROLL_MARGIN) {
+                scrollx = camera.x - 1;
+            } else if(Input.mouseX >= FP.screen.width - SCROLL_MARGIN) {
+                scrollx = camera.x + 1;
+            }
+            
+            FP.console.log(Input.mouseY);
+            if(Input.mouseY <= SCROLL_MARGIN) {
+                scrolly = camera.y - 1;
+            } else if(Input.mouseY >= FP.screen.height - SCROLL_MARGIN) {
+                scrolly = camera.y + 1;
+            }
             
             if(_selection.length > 0) {
                 if(hover && hover.faction == Mob.FACTION_ENEMY) {
@@ -71,7 +111,7 @@ package uk.co.zutty.ld24
                     deselectAll();
                     select(hover);
                 } else if(_selection.length > 0) {
-                    _markers.spawnNext(mouseX, mouseY);
+                    _marker.markPoint(mouseX, mouseY);
                     for each(var mob:Mob in _selection) {
                         mob.goTo(mouseX, mouseY);
                     }

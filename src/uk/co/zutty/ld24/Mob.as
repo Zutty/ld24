@@ -10,7 +10,7 @@ package uk.co.zutty.ld24
     import net.flashpunk.graphics.Image;
     import net.flashpunk.graphics.Spritemap;
     
-    public class Mob extends Suppliable {
+    public class Mob extends Entity {
         
         public static const FACTION_FRIENDLY:int = 1;
         public static const FACTION_ENEMY:int = 2;
@@ -63,8 +63,7 @@ package uk.co.zutty.ld24
             setHitbox(16, 16, 8, 8);
         }
         
-        override public function spawn(x:Number, y:Number):void {
-            super.spawn(x, y);
+        override public function added():void {
             _health = _maxHealth;
             _attackTimer = 0;
         }
@@ -97,7 +96,7 @@ package uk.co.zutty.ld24
             
             if(_health <= 0) {
                 _health = 0;
-                despawn();
+                FP.world.recycle(this);
             }
         }
         

@@ -1,6 +1,7 @@
 package uk.co.zutty.ld24
 {
     import net.flashpunk.Entity;
+    import net.flashpunk.FP;
     import net.flashpunk.Graphic;
     import net.flashpunk.Mask;
     import net.flashpunk.graphics.Spritemap;
@@ -37,10 +38,10 @@ package uk.co.zutty.ld24
             _gfx.play("attack");
         }
         
-        override public function update():void {
-            super.update();
-            x = Input.mouseX;
-            y = Input.mouseY;
+        override public function render():void {
+            x = FP.camera.x + FP.screen.mouseX;
+            y = FP.camera.y + FP.screen.mouseY;
+            super.render();
         }
     }
 }

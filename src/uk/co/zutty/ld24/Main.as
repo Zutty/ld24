@@ -4,6 +4,7 @@ package uk.co.zutty.ld24
     
     import net.flashpunk.Engine;
     import net.flashpunk.FP;
+    import net.flashpunk.utils.Input;
     
     public class Main extends Engine {
         public function Main() {
