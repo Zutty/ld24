@@ -18,11 +18,23 @@ package uk.co.zutty.ld24
             
             _gfx = new Spritemap(CURSOR_IMAGE, 16, 16);
             _gfx.add("pointer", [0], 0, false);
-            _gfx.add("go", [1,2,3], 6, true);
-            _gfx.add("attack", [4,5,6], 6, true);
+            _gfx.add("move", [1,2,3], 12, true);
+            _gfx.add("attack", [4,5,6], 12, true);
             _gfx.play("pointer");
             _gfx.centerOrigin();
             graphic = _gfx;
+        }
+        
+        public function pointer():void {
+            _gfx.play("pointer");
+        }
+        
+        public function move():void {
+            _gfx.play("move");
+        }
+        
+        public function attack():void {
+            _gfx.play("attack");
         }
         
         override public function update():void {

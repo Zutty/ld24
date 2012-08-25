@@ -8,6 +8,7 @@ package uk.co.zutty.ld24
         
         private var _creatures:Supplier = Supplier.newSupplier(32, function():Suppliable { return new Creature(); });
         private var _robots:Supplier = Supplier.newSupplier(32, function():Suppliable { return new Robot(); });
+        private var _markers:Supplier = Supplier.newSupplier(4, function():Suppliable { return new Marker(); });
         
         private var _selection:Vector.<Mob>;
         
@@ -20,6 +21,7 @@ package uk.co.zutty.ld24
             
             _creatures.addAll(this);
             _robots.addAll(this);
+            _markers.addAll(this);
             
             _creatures.spawnNext(20, 20);
             _robots.spawnNext(100, 20);
@@ -49,13 +51,34 @@ package uk.co.zutty.ld24
         
         override public function update():void {
             super.update();
+
+            var hover:Mob = collidePoint("mob", mouseX, mouseY) as Mob;
+            
+            if(_selection.length > 0) {
+                if(hover && hover.faction == Mob.FACTION_ENEMY) {
+                    _pointer.attack();
+                } else if(hover && hover.faction == Mob.FACTION_FRIENDLY) {
+                    _pointer.pointer();
+                } else if(!hover) {
+                    _pointer.move();
+                }
+            } else {
+                _pointer.pointer();
+            }
             
             if(Input.mousePressed) {
-                var e:Entity = collidePoint("mob", mouseX, mouseY);
-                
-                if(e != null) {
-                    deselectAll();
-                    select(e as Mob);
+                if(hover != null) {
+                    if(hover.faction == Mob.FACTION_FRIENDLY) {
+                        deselectAll();
+                        select(hover);
+                    }
+                } else {
+                    if(_selection.length > 0) {
+                        _markers.spawnNext(mouseX, mouseY);
+                        for each(var mob:Mob in _selection) {
+                            mob.goTo(mouseX, mouseY);
+                        }
+                    }
                 }
             }
         }

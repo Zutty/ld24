@@ -1,5 +1,7 @@
 package uk.co.zutty.ld24
 {
+    import flash.geom.Point;
+    
     import net.flashpunk.Entity;
     import net.flashpunk.Graphic;
     import net.flashpunk.Mask;
@@ -20,11 +22,15 @@ package uk.co.zutty.ld24
         private var _sprite:Spritemap;
         private var _selector:Image;
         private var _faction:int;
+        private var _waypoint:Point;
+        private var _moveToWaypoint:Boolean;
+        private var _speed:Number;
 
-        public function Mob(img:Class, frames:int, faction:int) {
+        public function Mob(img:Class, frames:int, faction:int, speed:Number) {
             super();
             
             _faction = faction;
+            _speed = speed;
             
             _sprite = new Spritemap(img, FRAMESIZE, FRAMESIZE);
             _sprite.add("still", [0], 6, true);
@@ -38,8 +44,17 @@ package uk.co.zutty.ld24
             _selector.centerOrigin();
             addGraphic(_selector);
             
+            _waypoint = new Point();
+            _moveToWaypoint = false;
+            
             type = "mob";
             setHitbox(16, 16, 8, 8);
+        }
+        
+        public function goTo(x:Number, y:Number):void {
+            _waypoint.x = x;
+            _waypoint.y = y;
+            _moveToWaypoint = true;
         }
         
         public function get faction():int {
@@ -52,6 +67,20 @@ package uk.co.zutty.ld24
         
         public function set selected(s:Boolean):void {
             _selector.visible = s;
+        }
+        
+        override public function update():void {
+            super.update();
+            
+            if(_moveToWaypoint) {
+                if(distanceToPoint(_waypoint.x, _waypoint.y) <= _speed) {
+                    x = _waypoint.x;
+                    y = _waypoint.y;
+                    _moveToWaypoint = false;
+                } else {
+                    moveTowards(_waypoint.x, _waypoint.y, _speed);
+                }
+            }
         }
     }
 }

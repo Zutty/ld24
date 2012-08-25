@@ -9,7 +9,7 @@ package uk.co.zutty.ld24
         public static const RABBIT_IMAGE:Class;
         
         public function Creature() {
-            super(RABBIT_IMAGE, 2, FACTION_FRIENDLY);
+            super(RABBIT_IMAGE, 2, FACTION_FRIENDLY, 1);
         }
     }
 }
