@@ -5,6 +5,9 @@ package uk.co.zutty.ld24
     import net.flashpunk.Mask;
     
     public class Suppliable extends Entity {
+        
+        private var _cType:String;
+        
         public function Suppliable(x:Number=0, y:Number=0, graphic:Graphic=null, mask:Mask=null) {
             super(x, y, graphic, mask);
             despawn();
@@ -23,5 +26,5 @@ package uk.co.zutty.ld24
             active = false;
             collidable = false;
         }
-}
+    }
 }

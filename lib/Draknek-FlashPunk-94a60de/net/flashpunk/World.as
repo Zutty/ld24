@@ -404,7 +404,7 @@
 			var e:Entity = _typeFirst[type];
 			while (e)
 			{
-				if (e.collidePoint(e.x, e.y, pX, pY)) return e;
+				if (e.collidable && e.collidePoint(e.x, e.y, pX, pY)) return e;
 				e = e._typeNext;
 			}
 			return null;
@@ -634,7 +634,7 @@
 				y:Number = e.y - e.originY;
 			while (n)
 			{
-				if (n != e)
+				if (n != e && n.collidable)
 				{
 					dist = (x - n.x) * (x - n.x) + (y - n.y) * (y - n.y);
 					if (dist < nearDist)
