@@ -6,7 +6,7 @@ package uk.co.zutty.ld24
     
     public class Marker extends Suppliable {
         
-        [Embed(source = 'assets/move_marker.png')]
+        [Embed(source = 'assets/move_marker2.png')]
         private static const MOVE_MARKER_IMAGE:Class;
         
         private var _gfx:Spritemap;

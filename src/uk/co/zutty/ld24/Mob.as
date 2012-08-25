@@ -77,8 +77,11 @@ package uk.co.zutty.ld24
                     x = _waypoint.x;
                     y = _waypoint.y;
                     _moveToWaypoint = false;
+                    _sprite.play("still");
                 } else {
                     moveTowards(_waypoint.x, _waypoint.y, _speed);
+                    _sprite.play("moving");
+                    _sprite.flipped = (_waypoint.x - x) > 0;
                 }
             }
         }
