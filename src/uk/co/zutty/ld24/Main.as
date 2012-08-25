@@ -7,7 +7,7 @@ package uk.co.zutty.ld24
     
     public class Main extends Engine {
         public function Main() {
-            super(160, 120, 60, false);
+            super(200, 150, 60, false);
 
             Mouse.hide();
 

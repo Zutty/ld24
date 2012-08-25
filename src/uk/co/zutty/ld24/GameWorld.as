@@ -67,17 +67,13 @@ package uk.co.zutty.ld24
             }
             
             if(Input.mousePressed) {
-                if(hover != null) {
-                    if(hover.faction == Mob.FACTION_FRIENDLY) {
-                        deselectAll();
-                        select(hover);
-                    }
-                } else {
-                    if(_selection.length > 0) {
-                        _markers.spawnNext(mouseX, mouseY);
-                        for each(var mob:Mob in _selection) {
-                            mob.goTo(mouseX, mouseY);
-                        }
+                if(hover != null && hover.faction == Mob.FACTION_FRIENDLY) {
+                    deselectAll();
+                    select(hover);
+                } else if(_selection.length > 0) {
+                    _markers.spawnNext(mouseX, mouseY);
+                    for each(var mob:Mob in _selection) {
+                        mob.goTo(mouseX, mouseY);
                     }
                 }
             }
