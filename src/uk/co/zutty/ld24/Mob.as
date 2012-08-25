@@ -68,6 +68,10 @@ package uk.co.zutty.ld24
             _attackTimer = 0;
         }
         
+        public function goToPoint(p:Point):void {
+            goTo(p.x, p.y);
+        }
+
         public function goTo(x:Number, y:Number):void {
             _waypoint.x = x;
             _waypoint.y = y;
@@ -100,6 +104,8 @@ package uk.co.zutty.ld24
             }
         }
         
+        protected function onWaypoint(w:Point):void {}
+        
         override public function update():void {
             super.update();
             
@@ -118,6 +124,7 @@ package uk.co.zutty.ld24
                     y = _waypoint.y;
                     _moveToWaypoint = false;
                     _sprite.play("still");
+                    onWaypoint(_waypoint);
                 } else {
                     moveTowards(_waypoint.x, _waypoint.y, _speed, "mob");
                     _sprite.play("moving");

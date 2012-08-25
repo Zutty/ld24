@@ -15,6 +15,14 @@ package uk.co.zutty.ld24
             _delegate[_delegate.length] = new Point(x, y);
         }
         
+        public function get first():Point {
+            return _delegate[0];
+        }
+        
+        public function get current():Point {
+            return _delegate[_idx];
+        }
+        
         public function get next():Point {
             _idx = (_idx + 1) % _delegate.length;
             return _delegate[_idx];

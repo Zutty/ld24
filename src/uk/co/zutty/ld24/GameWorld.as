@@ -10,9 +10,6 @@ package uk.co.zutty.ld24
     
     public class GameWorld extends World {
         
-        [Embed(source = 'assets/tree2.png')]
-        private static const TREE_IMAGE:Class;
-
         private static const SCROLL_MARGIN:Number = 8;
         
         private var _marker:Marker;
@@ -47,7 +44,19 @@ package uk.co.zutty.ld24
             
             var p:Point;
             for each(p in _level.getObjectPositions("objects", "tree")) {
-                add(new Entity(p.x, p.y, new Image(TREE_IMAGE)));
+                add(new Tree(p.x, p.y));
+            }
+            for each(p in _level.getObjectPositions("objects", "base")) {
+                add(new Base(p.x, p.y));
+            }
+            
+            var spawnPoint:Point = _level.getObjectPositions("objects", "spawn")[0];
+            scrollx = spawnPoint.x - FP.screen.width / 2;
+            scrolly = spawnPoint.y - FP.screen.height / 2;
+
+            for each(var route:Route in _level.getObjectRoutes("objects", "robot")) {
+                var robot:Robot = create(Robot) as Robot;
+                robot.route = route;
             }
         }
         

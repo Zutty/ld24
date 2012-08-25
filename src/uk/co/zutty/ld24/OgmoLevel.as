@@ -65,16 +65,18 @@ package uk.co.zutty.ld24
             return layer;
         }
 
-		public function getObjectWaypoints(layerName:String, objName:String):Route {
-			var route:Route = new Route();
+		public function getObjectRoutes(layerName:String, objName:String):Vector.<Route> {
+            var ret:Vector.<Route> = new Vector.<Route>();
 
 			for each(var obj:XML in data[layerName][0][objName]) {
+                var route:Route = new Route();
 				for each(var node:XML in obj.node) {
                     route.addPoint(node.@x, node.@y);
 				}
+                ret[ret.length] = route;
 			}
             
-			return route;
+			return ret;
 		}
 		
         public function getObjectPositions(layerName:String, objName:String):Vector.<Point> {
