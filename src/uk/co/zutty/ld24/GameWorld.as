@@ -143,6 +143,8 @@ package uk.co.zutty.ld24
                             (s as Mob).goTo(mouseX, mouseY);
                         }
                     }
+                } else if(_selection.length > 0) {
+                    deselectAll();
                 }
             }
             
