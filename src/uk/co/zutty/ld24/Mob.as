@@ -144,7 +144,7 @@ package uk.co.zutty.ld24
             }
             
             if(_stance == STANCE_AGGRESSIVE) {
-                var m:Mob = FP.world.nearestToEntity("mob", this) as Mob;
+                var m:Mob = FP.world.nearestToEntity("mob", this, true) as Mob;
                 if(m && m.faction != _faction) {
                     var dist:Number = distanceFrom(m);
                     

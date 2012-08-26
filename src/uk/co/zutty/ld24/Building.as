@@ -11,8 +11,8 @@ package uk.co.zutty.ld24
         private var _maxHealth:Number; 
         private var _sprite:Spritemap;
         
-        public function Building(img:Class, frameW:Number, frameH:Number, health:Number, x:Number, y:Number) {
-            super(x, y);
+        public function Building(img:Class, frameW:Number, frameH:Number, health:Number) {
+            super();
             
             _health = health;
             _maxHealth = _health;

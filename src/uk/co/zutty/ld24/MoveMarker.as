@@ -5,14 +5,14 @@ package uk.co.zutty.ld24
     import net.flashpunk.Mask;
     import net.flashpunk.graphics.Spritemap;
     
-    public class Marker extends Entity {
+    public class MoveMarker extends Entity {
         
         [Embed(source = 'assets/move_marker2.png')]
         private static const MOVE_MARKER_IMAGE:Class;
         
         private var _gfx:Spritemap;
         
-        public function Marker() {
+        public function MoveMarker() {
             super();
             
             _gfx = new Spritemap(MOVE_MARKER_IMAGE, 16, 16);

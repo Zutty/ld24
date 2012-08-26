@@ -9,8 +9,8 @@ package uk.co.zutty.ld24
         [Embed(source = 'assets/baseanim.png')]
         private static const BASE_IMAGE:Class;
 
-        public function Base(x:Number, y:Number) {
-            super(BASE_IMAGE, 80, 64, 120, x, y);
+        public function Base() {
+            super(BASE_IMAGE, 80, 64, 120);
             setHitbox(80, 32, 0, -32);
         }
     }

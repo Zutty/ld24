@@ -14,7 +14,7 @@ package uk.co.zutty.ld24
         private static const SCROLL_MARGIN:Number = 12;
         private static const SCROLL_SPEED:Number = 1.5;
         
-        private var _marker:Marker;
+        private var _marker:MoveMarker;
         
         private var _selection:Vector.<Mob>;
         
@@ -28,7 +28,7 @@ package uk.co.zutty.ld24
         public function GameWorld() {
             super();
             
-            _marker = new Marker();
+            _marker = new MoveMarker();
             add(_marker);
             
             loadLevel(new Level1());
@@ -40,10 +40,14 @@ package uk.co.zutty.ld24
             reset();
         }
         
-        private function build(builtFrom:Building):void {
+        private function buildUnit(builtFrom:Building):void {
             var mob:Mob = create(CatcherVan) as Mob;
             mob.x = builtFrom.x + 64;
             mob.y = builtFrom.y + 80;
+        }
+        
+        private function buildBuilding(building:Building):void {
+            add(new BuildMarker(building));
         }
         
         private function loadLevel(lvl:OgmoLevel):void {
@@ -59,7 +63,9 @@ package uk.co.zutty.ld24
             }
 
             var basePoint:Point = _level.getObjectPositions("objects", "base")[0];
-            _playerBase = new Base(basePoint.x, basePoint.y); 
+            _playerBase = new Base();
+            _playerBase.x = basePoint.x;
+            _playerBase.y = basePoint.y; 
             add(_playerBase);
             
             var spawnPoint:Point = _level.getObjectPositions("objects", "spawn")[0];
@@ -167,7 +173,10 @@ package uk.co.zutty.ld24
             
             // Building
             if(Input.pressed(Key.SPACE)) {
-                build(_playerBase);
+                buildUnit(_playerBase);
+            } else if(Input.pressed(Key.B)) {
+                deselectAll();
+                buildBuilding(create(CloningVat, false) as Building);
             }
         }
     }
