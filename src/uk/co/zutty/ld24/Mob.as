@@ -10,7 +10,7 @@ package uk.co.zutty.ld24
     import net.flashpunk.graphics.Image;
     import net.flashpunk.graphics.Spritemap;
     
-    public class Mob extends Entity {
+    public class Mob extends PhysicalEntity {
         
         public static const FACTION_FRIENDLY:int = 1;
         public static const FACTION_ENEMY:int = 2;
@@ -60,6 +60,7 @@ package uk.co.zutty.ld24
             _moveToWaypoint = false;
             
             type = "mob";
+            sprHeight = FRAMESIZE;
             setHitbox(16, 16, 8, 8);
         }
         
@@ -126,7 +127,7 @@ package uk.co.zutty.ld24
                     _sprite.play("still");
                     onWaypoint(_waypoint);
                 } else {
-                    moveTowards(_waypoint.x, _waypoint.y, _speed, "mob");
+                    moveTowards(_waypoint.x, _waypoint.y, _speed, ["mob", "terrain"]);
                     _sprite.play("moving");
                     _sprite.flipped = (_waypoint.x - x) > 0;
                 }

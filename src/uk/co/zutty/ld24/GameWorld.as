@@ -7,6 +7,7 @@ package uk.co.zutty.ld24
     import net.flashpunk.World;
     import net.flashpunk.graphics.Image;
     import net.flashpunk.utils.Input;
+    import net.flashpunk.utils.Key;
     
     public class GameWorld extends World {
         
@@ -21,6 +22,8 @@ package uk.co.zutty.ld24
         private var _level:OgmoLevel;
         private var _ground:Layer;
         private var _water:Layer;
+        
+        private var _playerBase:Building;
 
         public function GameWorld() {
             super();
@@ -36,6 +39,12 @@ package uk.co.zutty.ld24
             reset();
         }
         
+        private function build(builtFrom:Building):void {
+            var mob:Mob = create(CatcherVan) as Mob;
+            mob.x = builtFrom.x + 64;
+            mob.y = builtFrom.y + 80;
+        }
+        
         private function loadLevel(lvl:OgmoLevel):void {
             _level = lvl;
             _ground = lvl.getLayer("ground");
@@ -47,9 +56,10 @@ package uk.co.zutty.ld24
             for each(p in _level.getObjectPositions("objects", "tree")) {
                 add(new Tree(p.x, p.y));
             }
-            for each(p in _level.getObjectPositions("objects", "base")) {
-                add(new Base(p.x, p.y));
-            }
+
+            var basePoint:Point = _level.getObjectPositions("objects", "base")[0];
+            _playerBase = new Base(basePoint.x, basePoint.y); 
+            add(_playerBase);
             
             var spawnPoint:Point = _level.getObjectPositions("objects", "spawn")[0];
             scrollx = spawnPoint.x - FP.screen.width / 2;
@@ -109,6 +119,7 @@ package uk.co.zutty.ld24
                 }
             }
             
+            // Mouse picking/orders
             var hover:Mob = collidePoint("mob", mouseX, mouseY) as Mob;
             if(_selection.length > 0) {
                 if(hover && hover.faction == Mob.FACTION_ENEMY) {
@@ -130,6 +141,11 @@ package uk.co.zutty.ld24
                         mob.goTo(mouseX, mouseY);
                     }
                 }
+            }
+            
+            // Building
+            if(Input.pressed(Key.SPACE)) {
+                build(_playerBase);
             }
         }
     }

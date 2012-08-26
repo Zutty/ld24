@@ -17,6 +17,8 @@ package uk.co.zutty.ld24
         public function Cursor() {
             super();
             
+            layer = -65536;
+            
             _gfx = new Spritemap(CURSOR_IMAGE, 16, 16);
             _gfx.add("pointer", [0], 0, false);
             _gfx.add("move", [1,2,3], 12, true);

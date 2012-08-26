@@ -5,7 +5,7 @@ package uk.co.zutty.ld24
     import net.flashpunk.Mask;
     import net.flashpunk.graphics.Spritemap;
     
-    public class Building extends Entity {
+    public class Building extends PhysicalEntity {
         
         private var _health:Number;
         private var _maxHealth:Number; 
@@ -22,7 +22,8 @@ package uk.co.zutty.ld24
             _sprite.play("idle");
             addGraphic(_sprite);
             
-            type = "building";
+            type = "mob";
+            sprHeight = frameH;
             setHitbox(frameW, frameH, 0, 0);
         }
     }

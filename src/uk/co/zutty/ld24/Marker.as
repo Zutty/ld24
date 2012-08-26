@@ -20,6 +20,8 @@ package uk.co.zutty.ld24
             _gfx.centerOrigin();
             _gfx.callback = hide;
             graphic = _gfx;
+            
+            layer = -65535;
         }
         
         public function markPoint(x:Number, y:Number):void {

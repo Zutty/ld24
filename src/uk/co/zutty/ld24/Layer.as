@@ -14,6 +14,7 @@ package uk.co.zutty.ld24
         
         public function Layer(x:Number=0, y:Number=0, graphic:Graphic=null, mask:Mask=null) {
             super(x, y, graphic, mask);
+            layer = 100;
         }
         
         public function get tilemap():Tilemap {
