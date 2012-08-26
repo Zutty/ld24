@@ -20,6 +20,7 @@ package uk.co.zutty.ld24
             _gfx.centerOrigin();
             _gfx.callback = hide;
             graphic = _gfx;
+            hide();
             
             layer = -65535;
         }

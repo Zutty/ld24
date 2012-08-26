@@ -29,6 +29,7 @@ package uk.co.zutty.ld24
             super();
             
             _marker = new Marker();
+            add(_marker);
             
             loadLevel(new Level1());
             
@@ -108,18 +109,20 @@ package uk.co.zutty.ld24
         override public function update():void {
             super.update();
 
-            // Reset the cursor
-            _cursor.pointer();
+            var resetCursor:Boolean = true;
             
             // Mouse picking/orders
             var hover:Mob = collidePoint("mob", mouseX, mouseY) as Mob;
             if(_selection.length > 0) {
                 if(hover && hover.faction == Mob.FACTION_ENEMY && _selection[0].stance == Mob.STANCE_AGGRESSIVE) {
                     _cursor.attack();
+                    resetCursor = false;
                 } else if(hover && hover.faction == Mob.FACTION_FRIENDLY) {
                     _cursor.pointer();
+                    resetCursor = false;
                 } else if(!hover) {
                     _cursor.move();
+                    resetCursor = false;
                 }
             }
             
@@ -140,19 +143,27 @@ package uk.co.zutty.ld24
                 if(Input.mouseX <= SCROLL_MARGIN) {
                     scrollx = camera.x - SCROLL_SPEED;
                     _cursor.scrollLeft();
+                    resetCursor = false;
                 } else if(Input.mouseX >= FP.screen.width - SCROLL_MARGIN) {
                     scrollx = camera.x + SCROLL_SPEED;
                     _cursor.scrollRight();
+                    resetCursor = false;
                 }
                 if(Input.mouseY <= SCROLL_MARGIN) {
                     scrolly = camera.y - SCROLL_SPEED;
                     _cursor.scrollUp();
+                    resetCursor = false;
                 } else if(Input.mouseY >= FP.screen.height - SCROLL_MARGIN) {
                     scrolly = camera.y + SCROLL_SPEED;
                     _cursor.scrollDown();
+                    resetCursor = false;
                 }
             }
 
+            // Reset the cursor
+            if(resetCursor) {
+                _cursor.pointer();
+            }
             
             // Building
             if(Input.pressed(Key.SPACE)) {
