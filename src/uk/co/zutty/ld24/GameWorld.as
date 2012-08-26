@@ -111,24 +111,6 @@ package uk.co.zutty.ld24
             // Reset the cursor
             _cursor.pointer();
             
-            // Scrolling
-            if(FP.focused && Input.mouseX != 0 && Input.mouseY != 0) {
-                if(Input.mouseX <= SCROLL_MARGIN) {
-                    scrollx = camera.x - SCROLL_SPEED;
-                    _cursor.scrollLeft();
-                } else if(Input.mouseX >= FP.screen.width - SCROLL_MARGIN) {
-                    scrollx = camera.x + SCROLL_SPEED;
-                    _cursor.scrollRight();
-                }
-                if(Input.mouseY <= SCROLL_MARGIN) {
-                    scrolly = camera.y - SCROLL_SPEED;
-                    _cursor.scrollUp();
-                } else if(Input.mouseY >= FP.screen.height - SCROLL_MARGIN) {
-                    scrolly = camera.y + SCROLL_SPEED;
-                    _cursor.scrollDown();
-                }
-            }
-            
             // Mouse picking/orders
             var hover:Mob = collidePoint("mob", mouseX, mouseY) as Mob;
             if(_selection.length > 0) {
@@ -152,6 +134,25 @@ package uk.co.zutty.ld24
                     }
                 }
             }
+            
+            // Scrolling
+            if(FP.focused && Input.mouseX != 0 && Input.mouseY != 0) {
+                if(Input.mouseX <= SCROLL_MARGIN) {
+                    scrollx = camera.x - SCROLL_SPEED;
+                    _cursor.scrollLeft();
+                } else if(Input.mouseX >= FP.screen.width - SCROLL_MARGIN) {
+                    scrollx = camera.x + SCROLL_SPEED;
+                    _cursor.scrollRight();
+                }
+                if(Input.mouseY <= SCROLL_MARGIN) {
+                    scrolly = camera.y - SCROLL_SPEED;
+                    _cursor.scrollUp();
+                } else if(Input.mouseY >= FP.screen.height - SCROLL_MARGIN) {
+                    scrolly = camera.y + SCROLL_SPEED;
+                    _cursor.scrollDown();
+                }
+            }
+
             
             // Building
             if(Input.pressed(Key.SPACE)) {
