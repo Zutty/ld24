@@ -10,13 +10,14 @@ package uk.co.zutty.ld24
     
     public class GameWorld extends World {
         
-        private static const SCROLL_MARGIN:Number = 8;
+        private static const SCROLL_MARGIN:Number = 12;
+        private static const SCROLL_SPEED:Number = 1.5;
         
         private var _marker:Marker;
         
         private var _selection:Vector.<Mob>;
         
-        private var _pointer:Pointer;
+        private var _cursor:Cursor;
         private var _level:OgmoLevel;
         private var _ground:Layer;
         private var _water:Layer;
@@ -28,8 +29,8 @@ package uk.co.zutty.ld24
             
             loadLevel(new Level1());
             
-            _pointer = new Pointer();
-            add(_pointer);
+            _cursor = new Cursor();
+            add(_cursor);
             
             _selection = new Vector.<Mob>();
             reset();
@@ -87,32 +88,36 @@ package uk.co.zutty.ld24
         override public function update():void {
             super.update();
 
-            var hover:Mob = collidePoint("mob", mouseX, mouseY) as Mob;
+            // Reset the cursor
+            _cursor.pointer();
             
             // Scrolling
-            if(Input.mouseX <= SCROLL_MARGIN) {
-                scrollx = camera.x - 1;
-            } else if(Input.mouseX >= FP.screen.width - SCROLL_MARGIN) {
-                scrollx = camera.x + 1;
+            if(FP.focused && Input.mouseX != 0 && Input.mouseY != 0) {
+                if(Input.mouseX <= SCROLL_MARGIN) {
+                    scrollx = camera.x - SCROLL_SPEED;
+                    _cursor.scrollLeft();
+                } else if(Input.mouseX >= FP.screen.width - SCROLL_MARGIN) {
+                    scrollx = camera.x + SCROLL_SPEED;
+                    _cursor.scrollRight();
+                }
+                if(Input.mouseY <= SCROLL_MARGIN) {
+                    scrolly = camera.y - SCROLL_SPEED;
+                    _cursor.scrollUp();
+                } else if(Input.mouseY >= FP.screen.height - SCROLL_MARGIN) {
+                    scrolly = camera.y + SCROLL_SPEED;
+                    _cursor.scrollDown();
+                }
             }
             
-            FP.console.log(Input.mouseY);
-            if(Input.mouseY <= SCROLL_MARGIN) {
-                scrolly = camera.y - 1;
-            } else if(Input.mouseY >= FP.screen.height - SCROLL_MARGIN) {
-                scrolly = camera.y + 1;
-            }
-            
+            var hover:Mob = collidePoint("mob", mouseX, mouseY) as Mob;
             if(_selection.length > 0) {
                 if(hover && hover.faction == Mob.FACTION_ENEMY) {
-                    _pointer.attack();
+                    _cursor.attack();
                 } else if(hover && hover.faction == Mob.FACTION_FRIENDLY) {
-                    _pointer.pointer();
+                    _cursor.pointer();
                 } else if(!hover) {
-                    _pointer.move();
+                    _cursor.move();
                 }
-            } else {
-                _pointer.pointer();
             }
             
             if(Input.mousePressed) {
