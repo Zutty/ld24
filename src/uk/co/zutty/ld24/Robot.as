@@ -13,7 +13,7 @@ package uk.co.zutty.ld24
         private var _patrolTimer:uint;
 
         public function Robot() {
-            super(ROBOT_IMAGE, 2, FACTION_ENEMY, 0.3, 8);
+            super(ROBOT_IMAGE, 2, FACTION_ENEMY, STANCE_AGGRESSIVE, 0.3, 8);
         }
         
         override public function added():void {

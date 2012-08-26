@@ -15,6 +15,9 @@ package uk.co.zutty.ld24
         public static const FACTION_FRIENDLY:int = 1;
         public static const FACTION_ENEMY:int = 2;
         
+        public static const STANCE_AGGRESSIVE:int = 1; 
+        public static const STANCE_PASSIVE:int = 2; 
+        
         [Embed(source = 'assets/selected.png')]
         private static const SELECTOR_IMAGE:Class;
 
@@ -27,6 +30,7 @@ package uk.co.zutty.ld24
         private var _sprite:Spritemap;
         private var _selector:Image;
         private var _faction:int;
+        private var _stance:int;
         private var _waypoint:Point;
         private var _moveToWaypoint:Boolean;
         private var _speed:Number;
@@ -36,10 +40,11 @@ package uk.co.zutty.ld24
         private var _attackTimer:uint;
         private var _hurtTimer:uint;
 
-        public function Mob(img:Class, frames:int, faction:int, speed:Number, health:Number) {
+        public function Mob(img:Class, frames:int, faction:int, stance:int, speed:Number, health:Number) {
             super();
             
             _faction = faction;
+            _stance = stance;
             _speed = speed;
             _health = health;
             _maxHealth = health;
@@ -83,6 +88,10 @@ package uk.co.zutty.ld24
             return _faction;
         }
         
+        public function get stance():int {
+            return _stance;
+        }
+
         public function get selected():Boolean {
             return _selector.visible;
         }
@@ -102,6 +111,7 @@ package uk.co.zutty.ld24
             if(_health <= 0) {
                 _health = 0;
                 FP.world.recycle(this);
+                (FP.world as GameWorld).deselect(this);
             }
         }
         
@@ -133,16 +143,18 @@ package uk.co.zutty.ld24
                 }
             }
             
-            var m:Mob = FP.world.nearestToEntity("mob", this) as Mob;
-            if(m && m.faction != _faction) {
-                var dist:Number = distanceFrom(m);
-                
-                if(dist <= ATTACK_RANGE && _attackTimer == 0) {
-                    attack(m);
-                    _attackTimer = ATTACK_TIME;
-                } else if(dist <= AGGRO_RANGE) {
-                    _waypoint.x = m.x;
-                    _waypoint.y = m.y;
+            if(_stance == STANCE_AGGRESSIVE) {
+                var m:Mob = FP.world.nearestToEntity("mob", this) as Mob;
+                if(m && m.faction != _faction) {
+                    var dist:Number = distanceFrom(m);
+                    
+                    if(dist <= ATTACK_RANGE && _attackTimer == 0) {
+                        attack(m);
+                        _attackTimer = ATTACK_TIME;
+                    } else if(dist <= AGGRO_RANGE) {
+                        _waypoint.x = m.x;
+                        _waypoint.y = m.y;
+                    }
                 }
             }
         }

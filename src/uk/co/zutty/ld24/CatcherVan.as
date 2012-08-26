@@ -6,7 +6,7 @@ package uk.co.zutty.ld24
         public static const VAN_IMAGE:Class;
 
         public function CatcherVan() {
-            super(VAN_IMAGE, 3, FACTION_FRIENDLY, 0.6, 4);
+            super(VAN_IMAGE, 3, FACTION_FRIENDLY, STANCE_PASSIVE, 0.6, 4);
         }
     }
 }

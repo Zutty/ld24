@@ -82,6 +82,16 @@ package uk.co.zutty.ld24
             _selection.length = 0;
         }
         
+        public function deselect(mob:Mob):void {
+            mob.selected = false;
+            for(var idx:int = 0; idx < _selection.length; idx++) {
+                if(_selection[idx] == mob) {
+                    break;
+                }
+            }
+            _selection.splice(idx, 1);
+        }
+
         public function select(mob:Mob):void {
             mob.selected = true;
             _selection[_selection.length] = mob;
@@ -122,7 +132,7 @@ package uk.co.zutty.ld24
             // Mouse picking/orders
             var hover:Mob = collidePoint("mob", mouseX, mouseY) as Mob;
             if(_selection.length > 0) {
-                if(hover && hover.faction == Mob.FACTION_ENEMY) {
+                if(hover && hover.faction == Mob.FACTION_ENEMY && _selection[0].stance == Mob.STANCE_AGGRESSIVE) {
                     _cursor.attack();
                 } else if(hover && hover.faction == Mob.FACTION_FRIENDLY) {
                     _cursor.pointer();
