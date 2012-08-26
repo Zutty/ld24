@@ -16,7 +16,7 @@ package uk.co.zutty.ld24
         
         private var _marker:MoveMarker;
         
-        private var _selection:Vector.<Mob>;
+        private var _selection:Vector.<Selectable>;
         
         private var _cursor:Cursor;
         private var _level:OgmoLevel;
@@ -36,7 +36,7 @@ package uk.co.zutty.ld24
             _cursor = new Cursor();
             add(_cursor);
             
-            _selection = new Vector.<Mob>();
+            _selection = new Vector.<Selectable>();
             reset();
         }
         
@@ -83,7 +83,7 @@ package uk.co.zutty.ld24
         }
         
         public function deselectAll():void {
-            for each(var mob:Mob in _selection) {
+            for each(var mob:Selectable in _selection) {
                 mob.selected = false;
             }
             _selection.length = 0;
@@ -92,14 +92,14 @@ package uk.co.zutty.ld24
         public function deselect(mob:Mob):void {
             mob.selected = false;
             for(var idx:int = 0; idx < _selection.length; idx++) {
-                if(_selection[idx] == mob) {
+                if(_selection[idx] is Mob && _selection[idx] as Mob == mob) {
                     break;
                 }
             }
             _selection.splice(idx, 1);
         }
 
-        public function select(mob:Mob):void {
+        public function select(mob:Selectable):void {
             mob.selected = true;
             _selection[_selection.length] = mob;
         }
@@ -118,7 +118,7 @@ package uk.co.zutty.ld24
             var resetCursor:Boolean = true;
             
             // Mouse picking/orders
-            var hover:Mob = collidePoint("mob", mouseX, mouseY) as Mob;
+            var hover:Selectable = collidePoint("mob", mouseX, mouseY) as Selectable;
             if(_selection.length > 0) {
                 if(hover && hover.faction == Mob.FACTION_ENEMY && _selection[0].stance == Mob.STANCE_AGGRESSIVE) {
                     _cursor.attack();
@@ -126,7 +126,7 @@ package uk.co.zutty.ld24
                 } else if(hover && hover.faction == Mob.FACTION_FRIENDLY) {
                     _cursor.pointer();
                     resetCursor = false;
-                } else if(!hover) {
+                } else if(!hover && _selection[0] is Mob) {
                     _cursor.move();
                     resetCursor = false;
                 }
@@ -136,10 +136,12 @@ package uk.co.zutty.ld24
                 if(hover != null && hover.faction == Mob.FACTION_FRIENDLY) {
                     deselectAll();
                     select(hover);
-                } else if(_selection.length > 0) {
+                } else if(_selection.length > 0 && _selection[0] is Mob) {
                     _marker.markPoint(mouseX, mouseY);
-                    for each(var mob:Mob in _selection) {
-                        mob.goTo(mouseX, mouseY);
+                    for each(var s:Selectable in _selection) {
+                        if(s is Mob) {
+                            (s as Mob).goTo(mouseX, mouseY);
+                        }
                     }
                 }
             }

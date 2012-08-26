@@ -10,7 +10,7 @@ package uk.co.zutty.ld24
     import net.flashpunk.graphics.Image;
     import net.flashpunk.graphics.Spritemap;
     
-    public class Mob extends PhysicalEntity {
+    public class Mob extends PhysicalEntity implements Selectable {
         
         public static const FACTION_FRIENDLY:int = 1;
         public static const FACTION_ENEMY:int = 2;

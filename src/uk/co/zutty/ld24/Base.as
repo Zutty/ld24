@@ -10,7 +10,7 @@ package uk.co.zutty.ld24
         private static const BASE_IMAGE:Class;
 
         public function Base() {
-            super(BASE_IMAGE, 80, 64, 120);
+            super(BASE_IMAGE, 80, 64, 120, Mob.FACTION_FRIENDLY, Mob.STANCE_PASSIVE);
             setHitbox(80, 32, 0, -32);
         }
     }

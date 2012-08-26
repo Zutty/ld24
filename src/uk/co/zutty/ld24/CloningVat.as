@@ -10,7 +10,7 @@ package uk.co.zutty.ld24
         private static const CLONING_VAT_IMAGE:Class;
 
         public function CloningVat() {
-            super(CLONING_VAT_IMAGE, 64, 64, 80);
+            super(CLONING_VAT_IMAGE, 64, 64, 80, Mob.FACTION_FRIENDLY, Mob.STANCE_PASSIVE);
             setHitbox(64, 32, 0, -32);
         }
     }
